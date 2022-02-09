@@ -4,14 +4,14 @@ use serde::{Deserialize, Serialize};
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Tempest {
     EvtPrecip {
-        serial_number: String,  // SK-00008453
-        hub_sn: String,         // HB-0000001
-        evt: RainStartEventObs, // [1493322445]
+        serial_number: String, // SK-00008453
+        hub_sn: String,        // HB-0000001
+        evt: EvtPrecipEvt,     // [1493322445]
     },
     EvtStrike {
-        serial_number: String,        // SK-00008453
-        hub_sn: String,               // HB-0000001
-        evt: LightningStrikeEventObs, // [1493322445,27,3848]
+        serial_number: String, // SK-00008453
+        hub_sn: String,        // HB-0000001
+        evt: EvtStrikeEvt,     // [1493322445,27,3848]
     },
     RapidWind {
         serial_number: String, // "ST-00028405"
@@ -19,22 +19,22 @@ pub enum Tempest {
         ob: RapidWindOb,       // [1635567982,1.15,6]
     },
     ObsAir {
-        serial_number: String,       // "ST-00028405"
-        hub_sn: String,              // "HB-00027548"
-        obs: Vec<ObservationAirObs>, // [[1493164835,835.0,10.0,45,0,0,3.46,1]]
-        firmware_revision: u8,       // 17
+        serial_number: String, // "ST-00028405"
+        hub_sn: String,        // "HB-00027548"
+        obs: Vec<ObsAirObs>,   // [[1493164835,835.0,10.0,45,0,0,3.46,1]]
+        firmware_revision: u8, // 17
     },
     ObsSky {
-        serial_number: String,       // "SK-00008453"
-        hub_sn: String,              // "HB-00000001"
-        obs: Vec<ObservationSkyObs>, // [[1493321340,9000,10,0.0,2.6,4.6,7.4,187,3.12,1,130,null,0,3]]
-        firmware_revision: u8,       // 29
+        serial_number: String, // "SK-00008453"
+        hub_sn: String,        // "HB-00000001"
+        obs: Vec<ObsSkyObs>,   // [[1493321340,9000,10,0.0,2.6,4.6,7.4,187,3.12,1,130,null,0,3]]
+        firmware_revision: u8, // 29
     },
     ObsSt {
-        serial_number: String,      // "SK-00000512"
-        hub_sn: String,             // "HB-00013030"
-        obs: Vec<ObservationStObs>, // [[1588948614,0.18,0.22,0.27,144,6,1017.57,22.37,50.26,328,0.03,3,0.00000,0,0,0,2.410,1]]
-        firmware_revision: u8,      // 129
+        serial_number: String, // "SK-00000512"
+        hub_sn: String,        // "HB-00013030"
+        obs: Vec<ObsStObs>, // [[1588948614,0.18,0.22,0.27,144,6,1017.57,22.37,50.26,328,0.03,3,0.00000,0,0,0,2.410,1]]
+        firmware_revision: u8, // 129
     },
     DeviceStatus {
         serial_number: String,  // "AR-00004049"
@@ -63,12 +63,12 @@ pub enum Tempest {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct RainStartEventObs {
+pub struct EvtPrecipEvt {
     pub epoch: u64, // 1635567982 Seconds
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct LightningStrikeEventObs {
+pub struct EvtStrikeEvt {
     pub epoch: u64,    // 1635567982 Seconds
     pub distance: u16, // km
     pub energy: u16,
@@ -82,7 +82,7 @@ pub struct RapidWindOb {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct ObservationAirObs {
+pub struct ObsAirObs {
     pub epoch: u64,                         // 1635567982 Seconds
     pub station_pressure: f32,              // 835.0 MB
     pub air_temperature: f32,               // 10.0 Degrees C
@@ -94,7 +94,7 @@ pub struct ObservationAirObs {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct ObservationSkyObs {
+pub struct ObsSkyObs {
     pub epoch: u64,          // 1635567982 Seconds
     pub illuminance: u32,    // 835.0 MB
     pub uv: u32,             // 10.0 Degrees C
@@ -112,7 +112,7 @@ pub struct ObservationSkyObs {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct ObservationStObs {
+pub struct ObsStObs {
     pub epoch: u64,          // 1635567982 Seconds
     pub wind_lull_min3: f32, // 0 Km
     pub wind_avg: f32,       // 0 Km
@@ -149,7 +149,7 @@ mod tests {
         let deserialized: Tempest = serde_json::from_str(&buf).unwrap();
         let t = Tempest::EvtPrecip {
             hub_sn: "HB-00000001".to_string(),
-            evt: RainStartEventObs { epoch: 1493322445 },
+            evt: EvtPrecipEvt { epoch: 1493322445 },
             serial_number: "SK-00008453".to_string(),
         };
         assert_eq!(t, deserialized);
@@ -167,7 +167,7 @@ mod tests {
         let deserialized: Tempest = serde_json::from_str(&buf).unwrap();
         let t = Tempest::EvtStrike {
             hub_sn: "HB-00000001".to_string(),
-            evt: LightningStrikeEventObs {
+            evt: EvtStrikeEvt {
                 epoch: 1493322445,
                 distance: 27,
                 energy: 3848,
@@ -214,7 +214,7 @@ mod tests {
         let deserialized: Tempest = serde_json::from_str(&buf).unwrap();
         let t = Tempest::ObsAir {
             hub_sn: "HB-00000001".to_string(),
-            obs: vec![ObservationAirObs {
+            obs: vec![ObsAirObs {
                 epoch: 1493164835,
                 station_pressure: 835.0,
                 air_temperature: 10.0,
@@ -245,7 +245,7 @@ mod tests {
         let deserialized: Tempest = serde_json::from_str(&buf).unwrap();
         let t = Tempest::ObsSky {
             hub_sn: "HB-00000001".to_string(),
-            obs: vec![ObservationSkyObs {
+            obs: vec![ObsSkyObs {
                 epoch: 1493321340,
                 illuminance: 9000,
                 uv: 10,
@@ -281,7 +281,7 @@ mod tests {
         let deserialized: Tempest = serde_json::from_str(&buf).unwrap();
         let t = Tempest::ObsSt {
             hub_sn: "HB-00013030".to_string(),
-            obs: vec![ObservationStObs {
+            obs: vec![ObsStObs {
                 epoch: 1588948614,
                 wind_lull_min3: 0.18,
                 wind_avg: 0.22,
