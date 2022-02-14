@@ -57,7 +57,7 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
                 println!("decoded json {:?}", &v);
             }
             Mode::Struct => {
-                let v: tempest::Tempest = serde_json::from_slice(&buf[..amt])?;
+                let v: libtempest::Tempest = serde_json::from_slice(&buf[..amt])?;
                 println!("tempest::Tempest = {v:?}");
             }
         }

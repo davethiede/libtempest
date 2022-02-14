@@ -1,11 +1,17 @@
 [package]
-name = "tempest"
+name = "libtempest"
 version = "0.1.0"
 edition = "2021"
+authors = ["David Thiede"]
+description = "Parsing libary for WeatherFlow Tempest data records"
+license = "Apache-2.0"
+repository =  "https://github.com/davethiede/tempest.git"
+keywords = ["weatherflow", "tempest", "parser", "json"]
+categories = ["data-structures", "encoding", "parser-implementations"]
 
 [dependencies]
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "*"
+serde = { version = "^1", features = ["derive"] }
+serde_json = "^1"
 
 [dev-dependencies]
-clap = {version="*", features=["derive", "wrap_help"]}
+clap = {version="^3", features=["derive", "wrap_help"]}
