@@ -1,4 +1,4 @@
-# tempest
+# libtempest
 
 ## A parser definition for weatherflow/tempest json records.
 
@@ -13,7 +13,7 @@ to be used as a connector for other services.
 
 ### Example
 ```rust
-use tempest::Tempest;
+use libtempest::Tempest;
 use serde_json;
 let buf = r#"
 {
@@ -33,4 +33,4 @@ if let Tempest::EvtPrecip(x) = &rec {
 ### References
 - [`WeatherFlow UDP`](https://weatherflow.github.io/Tempest/api/udp/v171/)
 
-License: free
+License: Apache-2.0
