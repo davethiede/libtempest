@@ -1,9 +1,9 @@
 use serde_json::Value;
 use std::net::UdpSocket;
 
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 
-#[derive(Debug, clap::ArgEnum, Clone, Parser)]
+#[derive(Debug, ValueEnum, Clone, Parser)]
 enum Mode {
     Struct,
     Raw,
@@ -34,7 +34,7 @@ struct Arg {
     /// struct: Parse into `Tempest`.{n}
     /// parsed: Parse into generic `serde_json::Value`.{n}
     /// raw   : Display the text obtained from the packet.
-    #[clap(arg_enum, short, long, default_value_t=Mode::Struct)]
+    #[clap(value_enum, short, long, default_value_t=Mode::Struct)]
     mode: Mode,
 }
 
