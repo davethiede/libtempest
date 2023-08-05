@@ -1,7 +1,7 @@
-use serde_json::Value;
-use std::net::UdpSocket;
+use std::net::{SocketAddr, UdpSocket};
 
 use clap::{Parser, ValueEnum};
+use serde_json::Value;
 
 #[derive(Debug, ValueEnum, Clone, Parser)]
 enum Mode {
@@ -27,7 +27,7 @@ struct Arg {
 
     /// Listen addr:port
     #[clap(long, short, default_value = "0.0.0.0:50222")]
-    addr: String,
+    addr: SocketAddr,
 
     /// Display mode.
     ///
