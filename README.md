@@ -1,5 +1,8 @@
 # libtempest
 
+[![Crates.io](https://img.shields.io/crates/v/libtempest.svg)](https://crates.io/crates/libtempest)
+[![Documentation](https://docs.rs/libtempest/badge.svg)](https://docs.rs/libtempest/)
+
 ## A parser definition for weatherflow/tempest json records.
 
 This library is the result of expanding a simple UDP packet
